@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Loader2 } from "lucide-react";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),

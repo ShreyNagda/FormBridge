@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Download, Search } from "lucide-react";
 import Papa from "papaparse";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 
 interface Submission {
   _id: string;

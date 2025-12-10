@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/providers/session-provider";
-import { Toaster } from "react-hot-toast";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
@@ -22,7 +23,13 @@ export default function RootLayout({
       <body className={`${inter.variable} ${outfit.variable} antialiased `}>
         <AuthProvider>
           {children}
-          <Toaster position="bottom-right" />
+          <ToastContainer
+            position="bottom-right"
+            hideProgressBar
+            closeOnClick
+            closeButton
+            autoClose={1000}
+          />
         </AuthProvider>
       </body>
     </html>

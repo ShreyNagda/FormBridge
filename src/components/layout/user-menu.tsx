@@ -12,6 +12,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/shared/button";
+import ConfirmDialog from "@/components/shared/confirm-dialog";
 
 interface UserMenuProps {
   session: Session;
@@ -19,6 +20,7 @@ interface UserMenuProps {
 
 export default function UserMenu({ session }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -98,7 +100,10 @@ export default function UserMenu({ session }: UserMenuProps) {
 
           <div className="mt-1 pt-1 border-t border-gray-100 px-1">
             <button
-              onClick={() => signOut({ callbackUrl: "/" })}
+              onClick={() => {
+                setIsOpen(false);
+                setShowLogoutDialog(true);
+              }}
               className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
             >
               <LogOut size={16} />
@@ -107,6 +112,16 @@ export default function UserMenu({ session }: UserMenuProps) {
           </div>
         </div>
       )}
+
+      <ConfirmDialog
+        isOpen={showLogoutDialog}
+        onClose={() => setShowLogoutDialog(false)}
+        onConfirm={() => signOut({ callbackUrl: "/" })}
+        title="Log out"
+        description="Are you sure you want to log out?"
+        confirmText="Log out"
+        variant="danger"
+      />
     </div>
   );
 }

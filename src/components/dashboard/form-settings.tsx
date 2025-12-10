@@ -8,7 +8,8 @@ import * as z from "zod";
 import { Loader2, Trash2, Save, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/shared/button";
 import Link from "next/link";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
+import ConfirmDialog from "@/components/shared/confirm-dialog";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -37,6 +38,14 @@ export default function FormSettings({ form }: FormSettingsProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isToggling, setIsToggling] = useState(false);
+  const [isTransferring, setIsTransferring] = useState(false);
+  const [transferEmail, setTransferEmail] = useState("");
+
+  // Dialog states
+  const [showDisableDialog, setShowDisableDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showTransferDialog, setShowTransferDialog] = useState(false);
 
   const {
     register,
@@ -91,15 +100,34 @@ export default function FormSettings({ form }: FormSettingsProps) {
     }
   };
 
-  const handleDelete = async () => {
-    if (
-      !confirm(
-        "Are you sure you want to delete this form? This action cannot be undone and will delete all submissions."
-      )
-    ) {
-      return;
-    }
+  const handleToggleActive = async () => {
+    setIsToggling(true);
+    try {
+      const res = await fetch(`/api/forms/${form._id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          isActive: !form.isActive,
+        }),
+      });
 
+      if (!res.ok) throw new Error("Failed to update status");
+
+      toast.success(
+        `Form ${form.isActive ? "disabled" : "enabled"} successfully`
+      );
+      router.refresh();
+      setShowDisableDialog(false);
+    } catch (error) {
+      toast.error("Failed to update status");
+    } finally {
+      setIsToggling(false);
+    }
+  };
+
+  const handleDelete = async () => {
     setIsDeleting(true);
 
     try {
@@ -117,6 +145,37 @@ export default function FormSettings({ form }: FormSettingsProps) {
     } catch (error) {
       toast.error("Failed to delete form");
       setIsDeleting(false);
+      setShowDeleteDialog(false);
+    }
+  };
+
+  const handleTransfer = async () => {
+    if (!transferEmail) return;
+
+    setIsTransferring(true);
+
+    try {
+      const res = await fetch(`/api/forms/${form._id}/transfer`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: transferEmail }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to transfer form");
+      }
+
+      toast.success("Form transferred successfully");
+      router.push("/dashboard");
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message || "Failed to transfer form");
+      setIsTransferring(false);
+      setShowTransferDialog(false);
     }
   };
 
@@ -249,21 +308,31 @@ export default function FormSettings({ form }: FormSettingsProps) {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-base font-medium text-red-900">
-                Disable Form
+                {form.isActive ? "Disable Form" : "Enable Form"}
               </h3>
               <p className="text-sm text-red-700">
-                Temporarily disable new submissions for this form.
+                {form.isActive
+                  ? "Temporarily disable new submissions for this form."
+                  : "Enable new submissions for this form."}
               </p>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                id="isActive"
-                {...register("isActive")}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-red-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
-            </label>
+            <Button
+              type="button"
+              variant={form.isActive ? "danger" : "secondary"}
+              onClick={() => setShowDisableDialog(true)}
+              disabled={isToggling}
+            >
+              {isToggling ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {form.isActive ? "Disabling..." : "Enabling..."}
+                </>
+              ) : form.isActive ? (
+                "Disable Form"
+              ) : (
+                "Enable Form"
+              )}
+            </Button>
           </div>
 
           <div className="pt-6 border-t border-red-200 mb-6">
@@ -277,12 +346,21 @@ export default function FormSettings({ form }: FormSettingsProps) {
               <input
                 type="email"
                 placeholder="Enter new owner's email"
+                value={transferEmail}
+                onChange={(e) => setTransferEmail(e.target.value)}
                 className="flex-1 px-3 py-2 border border-red-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 bg-white"
               />
               <Button
                 variant="danger"
                 type="button"
-                onClick={() => toast.error("Transfer feature coming soon")}
+                onClick={() => {
+                  if (!transferEmail) {
+                    toast.error("Please enter an email address");
+                    return;
+                  }
+                  setShowTransferDialog(true);
+                }}
+                disabled={!transferEmail}
               >
                 Transfer
               </Button>
@@ -300,7 +378,7 @@ export default function FormSettings({ form }: FormSettingsProps) {
             <Button
               variant="danger"
               type="button"
-              onClick={handleDelete}
+              onClick={() => setShowDeleteDialog(true)}
               disabled={isDeleting}
               className="w-full sm:w-auto"
             >
@@ -319,6 +397,43 @@ export default function FormSettings({ form }: FormSettingsProps) {
           </div>
         </div>
       </form>
+
+      <ConfirmDialog
+        isOpen={showDisableDialog}
+        onClose={() => setShowDisableDialog(false)}
+        onConfirm={handleToggleActive}
+        title={form.isActive ? "Disable Form" : "Enable Form"}
+        description={
+          form.isActive
+            ? "Are you sure you want to disable this form? New submissions will be rejected."
+            : "Are you sure you want to enable this form? New submissions will be accepted."
+        }
+        confirmText={form.isActive ? "Disable" : "Enable"}
+        variant={form.isActive ? "danger" : "primary"}
+        isLoading={isToggling}
+      />
+
+      <ConfirmDialog
+        isOpen={showDeleteDialog}
+        onClose={() => setShowDeleteDialog(false)}
+        onConfirm={handleDelete}
+        title="Delete Form"
+        description="Are you sure you want to delete this form? This action cannot be undone and will delete all submissions."
+        confirmText="Delete"
+        variant="danger"
+        isLoading={isDeleting}
+      />
+
+      <ConfirmDialog
+        isOpen={showTransferDialog}
+        onClose={() => setShowTransferDialog(false)}
+        onConfirm={handleTransfer}
+        title="Transfer Ownership"
+        description={`Are you sure you want to transfer this form to ${transferEmail}? You will lose access to it immediately.`}
+        confirmText="Transfer"
+        variant="danger"
+        isLoading={isTransferring}
+      />
     </div>
   );
 }

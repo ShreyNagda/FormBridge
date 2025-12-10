@@ -176,7 +176,7 @@ export default function RegisterForm() {
           disabled={isLoading}
           className="w-full py-2.5 bg-zinc-900 text-white rounded-lg font-medium hover:bg-zinc-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
-          {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Sign Up"}
+          {isLoading ? <Loader2 className="animate-spin" /> : "Sign Up"}
         </button>
       </form>
 

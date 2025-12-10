@@ -12,7 +12,6 @@ interface HeaderProps {
 
 export default async function Header({ hideNavLinks = false }: HeaderProps) {
   const session = await getServerSession(authOptions);
-
   return (
     <header className="fixed top-0 left-0 right-0 z-50 shadow-sm  px-6 lg:px-12 py-5 flex items-center justify-between border-b border-gray-100 bg-white">
       <Link href="/">

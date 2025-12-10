@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 
 export default function CopyButton({
   text,

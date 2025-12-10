@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AsyncButton } from "@/components/shared/async-button";
 import { Loader2, Send, CheckCircle2, AlertCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 
 interface TestFormButtonProps {
   formId: string;
