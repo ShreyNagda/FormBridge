@@ -5,8 +5,10 @@ export const APP_URL =
   process.env.NEXT_PUBLIC_APP_URL || "https://staticsend.com";
 
 export const SOCIAL_LINKS = {
-  twitter: "@staticsend",
-  github: "https://github.com/staticsend",
+  twitter: "https://x.com/shrey_nagda",
+  github: "https://github.com/ShreyNagda/StaticSend",
+  linkedin: "https://www.linkedin.com/in/shreynagda",
+  portfolio: "https://shreyn.vercel.app",
 };
 
 export const SEO_KEYWORDS = [
