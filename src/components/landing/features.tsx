@@ -1,4 +1,5 @@
 import { Zap, Settings, Mail, Download } from "lucide-react";
+import { Card } from "@/components/shared/card";
 
 const features = [
   {
@@ -29,10 +30,11 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="py-24 bg-gray-50">
+    <section id="features" className="py-16 lg:py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="text-sm font-semibold text-emerald-600 tracking-wide uppercase mb-3">
+        <div className="text-center max-w-2xl mx-auto mb-12 lg:mb-16">
+          <div className="w-fit mx-auto bg-emerald-100 text-xs text-emerald-600 tracking-wide mb-3 px-3 py-1 rounded-full flex items-center">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 mr-2 inline-block animate-pulse"></span>
             Powerful Features
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -43,23 +45,16 @@ export default function Features() {
             not managing backends.
           </p>
         </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8">
           {features.map((feature, index) => (
-            <div
-              key={index}
-              className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow group"
-            >
-              <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center mb-6 text-gray-900 group-hover:bg-emerald-100 group-hover:text-emerald-600 transition-all duration-200 ease-in-out">
-                <feature.icon size={24} />
-              </div>
+            <Card key={index} icon={feature.icon} className="h-full">
               <h4 className="text-xl font-bold text-gray-900 mb-3">
                 {feature.title}
               </h4>
               <p className="text-gray-600 leading-relaxed">
                 {feature.description}
               </p>
-            </div>
+            </Card>
           ))}
         </div>
       </div>

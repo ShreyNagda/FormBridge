@@ -13,7 +13,7 @@ interface HeaderProps {
 export default async function Header({ hideNavLinks = false }: HeaderProps) {
   const session = await getServerSession(authOptions);
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 shadow-sm  px-6 lg:px-12 py-5 flex items-center justify-between border-b border-gray-100 bg-white">
+    <header className="fixed top-0 left-0 right-0 z-50 shadow-sm px-6 lg:px-12 p-4 lg:py-8 flex items-center justify-between border-b border-gray-100 bg-white">
       <Link href="/">
         <Logo />
       </Link>
@@ -44,7 +44,7 @@ export default async function Header({ hideNavLinks = false }: HeaderProps) {
                 href="/auth/login"
                 className="text-sm hover:opacity-80 transition-opacity"
               >
-                <Button variant="secondary">Log in</Button>
+                <Button variant="outline">Log in</Button>
               </Link>
               <Link href="/auth/register" className="text-sm font-medium">
                 <Button variant="primary">Start for Free</Button>
@@ -52,7 +52,7 @@ export default async function Header({ hideNavLinks = false }: HeaderProps) {
             </>
           )}
         </nav>
-        <MobileMenu session={session} hideNavLinks={hideNavLinks} />
+        <MobileMenu session={session} />
       </div>
     </header>
   );

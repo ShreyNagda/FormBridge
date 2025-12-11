@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import CopyButton from "./copy-button";
+import { Card } from "./card";
 
 interface TerminalCodeProps {
   code: string;
@@ -17,9 +18,9 @@ export default function TerminalCode({
   showCopy = true,
 }: TerminalCodeProps) {
   return (
-    <div
+    <Card
       className={cn(
-        "rounded-lg shadow-2xl overflow-hidden bg-gray-900 text-white",
+        "p-0 hover:-translate-y-1 duration-500 rounded-lg shadow-2xl overflow-hidden bg-gray-900 text-white",
         className
       )}
     >
@@ -50,6 +51,6 @@ export default function TerminalCode({
           <code className={`language-${language}`}>{code}</code>
         </pre>
       </div>
-    </div>
+    </Card>
   );
 }

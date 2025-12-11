@@ -26,7 +26,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       secondary:
         "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 disabled:opacity-50",
       outline:
-        "border border-zinc-200 bg-transparent hover:bg-zinc-50 text-zinc-900 disabled:opacity-50",
+        "border-[2px] border-zinc-200 bg-transparent hover:bg-zinc-50 text-zinc-900 disabled:opacity-50",
       ghost:
         "bg-transparent hover:bg-zinc-100 text-zinc-700 hover:text-zinc-900 disabled:opacity-50",
       danger: "bg-red-600 text-white hover:bg-red-700 disabled:opacity-50",
@@ -43,7 +43,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "gap-1 inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 disabled:pointer-events-none",
+          "cursor-pointer pagegap-1 inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 disabled:pointer-events-none",
           variants[variant],
           sizes[size],
           className

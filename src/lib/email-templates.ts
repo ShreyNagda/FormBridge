@@ -22,7 +22,7 @@ export function getVerificationEmailTemplate(
                 <div style="width: 28px; height: 28px; background-color: #000000; border: 2px solid #ffffff; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   <div style="width: 12px; height: 12px; background-color: #ffffff; border-radius: 2px;"></div>
                 </div>
-                <span style="color: #ffffff; font-size: 20px; font-weight: bold;">FormBridge</span>
+                <span style="color: #ffffff; font-size: 20px; font-weight: bold;">StaticSend</span>
               </div>
             </td>
           </tr>
@@ -37,7 +37,7 @@ export function getVerificationEmailTemplate(
               </p>
 
               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 24px; color: #6b7280;">
-                Thanks for signing up for FormBridge! To complete your registration and start collecting form submissions, please verify your email address by clicking the button below.
+                Thanks for signing up for StaticSend! To complete your registration and start collecting form submissions, please verify your email address by clicking the button below.
               </p>
 
               <table width="100%" cellpadding="0" cellspacing="0">
@@ -60,7 +60,7 @@ export function getVerificationEmailTemplate(
 
               <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
                 <p style="margin: 0; font-size: 14px; line-height: 20px; color: #9ca3af;">
-                  This verification link will expire in 24 hours. If you didn't create an account with FormBridge, you can safely ignore this email.
+                  This verification link will expire in 24 hours. If you didn't create an account with StaticSend, you can safely ignore this email.
                 </p>
               </div>
             </td>
@@ -70,7 +70,7 @@ export function getVerificationEmailTemplate(
           <tr>
             <td style="padding: 24px 40px; background-color: #f9fafb; text-align: center; border-top: 1px solid #e5e7eb;">
               <p style="margin: 0; font-size: 12px; color: #9ca3af;">
-                © ${new Date().getFullYear()} FormBridge. All rights reserved.
+                © ${new Date().getFullYear()} StaticSend. All rights reserved.
               </p>
             </td>
           </tr>
@@ -90,7 +90,7 @@ export function getWelcomeEmailTemplate(name: string): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to FormBridge</title>
+  <title>Welcome to StaticSend</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f9fafb;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f9fafb; padding: 40px 20px;">
@@ -104,7 +104,7 @@ export function getWelcomeEmailTemplate(name: string): string {
                 <div style="width: 28px; height: 28px; background-color: #000000; border: 2px solid #ffffff; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
                   <div style="width: 12px; height: 12px; background-color: #ffffff; border-radius: 2px;"></div>
                 </div>
-                <span style="color: #ffffff; font-size: 20px; font-weight: bold;">FormBridge</span>
+                <span style="color: #ffffff; font-size: 20px; font-weight: bold;">StaticSend</span>
               </div>
             </td>
           </tr>
@@ -112,14 +112,14 @@ export function getWelcomeEmailTemplate(name: string): string {
           <!-- Content -->
           <tr>
             <td style="padding: 40px;">
-              <h1 style="margin: 0 0 16px 0; font-size: 24px; font-weight: bold; color: #111827;">Welcome to FormBridge! 🎉</h1>
+              <h1 style="margin: 0 0 16px 0; font-size: 24px; font-weight: bold; color: #111827;">Welcome to StaticSend! 🎉</h1>
 
               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 24px; color: #6b7280;">
                 Hi ${name},
               </p>
 
               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 24px; color: #6b7280;">
-                Your email has been successfully verified! You're all set to start using FormBridge to collect form submissions from your static sites.
+                Your email has been successfully verified! You're all set to start using StaticSend to collect form submissions from your static sites.
               </p>
 
               <table width="100%" cellpadding="0" cellspacing="0">
@@ -150,7 +150,7 @@ export function getWelcomeEmailTemplate(name: string): string {
           <tr>
             <td style="padding: 24px 40px; background-color: #f9fafb; text-align: center; border-top: 1px solid #e5e7eb;">
               <p style="margin: 0; font-size: 12px; color: #9ca3af;">
-                © ${new Date().getFullYear()} FormBridge. All rights reserved.
+                © ${new Date().getFullYear()} StaticSend. All rights reserved.
               </p>
             </td>
           </tr>
