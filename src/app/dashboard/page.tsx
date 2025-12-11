@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import connectDB from "@/lib/db";
 import Form from "@/models/Form";
 import { Plus, FileText, Calendar } from "lucide-react";
+import { Card } from "@/components/shared/card";
 
 async function getForms() {
   const session = await getServerSession(authOptions);
@@ -65,32 +66,36 @@ export default async function DashboardPage() {
             <Link
               key={form._id.toString()}
               href={`/dashboard/forms/${form._id}`}
-              className="group p-6 rounded-xl border border-gray-200 hover:border-black/20 hover:shadow-sm transition-all"
+              className="block h-full"
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-indigo-600 transition-colors">
-                  <FileText size={20} />
+              <Card className="h-full" icon={FileText}>
+                <div className="flex items-start justify-between mb-2">
+                  <div />
+                  <div
+                    className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      form.isActive
+                        ? "bg-emerald-50 text-emerald-700"
+                        : "bg-gray-100 text-gray-600"
+                    }`}
+                  >
+                    {form.isActive ? "Active" : "Inactive"}
+                  </div>
                 </div>
-                <div
-                  className={`px-2 py-1 rounded text-xs font-medium ${
-                    form.isActive ? "text-green-700" : "text-gray-600"
-                  }`}
-                >
-                  {form.isActive ? "Active" : "Inactive"}
+                <h3 className="text-lg font-bold text-gray-900 mb-1 transition-colors">
+                  {form.name}
+                </h3>
+                <p className="text-sm text-gray-500 line-clamp-2 h-10 mb-4">
+                  {form.description || "No description provided"}
+                </p>
+                <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between text-sm text-gray-500">
+                  <div className="flex items-center gap-2">
+                    <Calendar size={14} />
+                    <span>
+                      Created {new Date(form.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-indigo-600 transition-colors">
-                {form.name}
-              </h3>
-              <p className="text-sm text-gray-500 line-clamp-2 h-10 mb-4">
-                {form.description || "No description"}
-              </p>
-              <div className="flex items-center text-xs text-gray-400 gap-2 pt-4 border-t border-gray-50">
-                <Calendar size={14} />
-                <span>
-                  Created {new Date(form.createdAt).toLocaleDateString()}
-                </span>
-              </div>
+              </Card>
             </Link>
           ))}
         </div>
