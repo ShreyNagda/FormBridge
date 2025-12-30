@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Download, Search, Columns, Check } from "lucide-react";
+import { Download, Search, Columns, Check, Trash2 } from "lucide-react";
 import Papa from "papaparse";
 import { toast } from "react-toastify";
+import ConfirmDialog from "@/components/shared/confirm-dialog";
+import { useRouter } from "next/navigation";
 
 interface Submission {
   _id: string;
@@ -18,7 +20,13 @@ export default function SubmissionsTable({
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [showColumnSelector, setShowColumnSelector] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [submissionToDelete, setSubmissionToDelete] = useState<string | null>(
+    null
+  );
+  const [isDeleting, setIsDeleting] = useState(false);
   const columnSelectorRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   // Get all unique keys from all submissions to build table headers
   const allKeys = Array.from(
@@ -69,6 +77,36 @@ export default function SubmissionsTable({
   const selectAllColumns = () => setVisibleColumns(allKeys);
   const deselectAllColumns = () => setVisibleColumns([]);
 
+  const handleDeleteClick = (submissionId: string) => {
+    setSubmissionToDelete(submissionId);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!submissionToDelete) return;
+
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/submissions/${submissionToDelete}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        toast.success("Submission deleted successfully");
+        router.refresh();
+      } else {
+        const data = await response.json();
+        toast.error(data.message || "Failed to delete submission");
+      }
+    } catch {
+      toast.error("Failed to delete submission");
+    } finally {
+      setIsDeleting(false);
+      setDeleteDialogOpen(false);
+      setSubmissionToDelete(null);
+    }
+  };
+
   const filteredSubmissions = submissions.filter((sub) =>
     JSON.stringify(sub.data).toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -90,7 +128,7 @@ export default function SubmissionsTable({
       link.click();
       document.body.removeChild(link);
       toast.success("Submissions exported successfully");
-    } catch (error) {
+    } catch {
       toast.error("Failed to export submissions");
     }
   };
@@ -207,11 +245,17 @@ export default function SubmissionsTable({
                       {key}
                     </th>
                   ))}
+                <th className="px-6 py-3 whitespace-nowrap text-right">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {filteredSubmissions.map((sub) => (
-                <tr key={sub._id} className="transition-colors">
+                <tr
+                  key={sub._id}
+                  className="transition-colors hover:bg-gray-50"
+                >
                   <td className="px-6 py-3 whitespace-nowrap text-gray-500">
                     {new Date(sub.createdAt).toLocaleString()}
                   </td>
@@ -227,12 +271,36 @@ export default function SubmissionsTable({
                           : String(sub.data[key] || "-")}
                       </td>
                     ))}
+                  <td className="px-6 py-3 whitespace-nowrap text-right">
+                    <button
+                      onClick={() => handleDeleteClick(sub._id)}
+                      className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      title="Delete submission"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
+
+      <ConfirmDialog
+        isOpen={deleteDialogOpen}
+        onClose={() => {
+          setDeleteDialogOpen(false);
+          setSubmissionToDelete(null);
+        }}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Submission"
+        description="Are you sure you want to delete this submission? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        isLoading={isDeleting}
+      />
     </div>
   );
 }
