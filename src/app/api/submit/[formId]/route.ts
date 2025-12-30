@@ -5,6 +5,17 @@ import Submission from "@/models/Submission";
 import User from "@/models/User";
 import { sendEmail } from "@/lib/email";
 
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST,OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    },
+  });
+}
+
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ formId: string }> }
@@ -14,7 +25,7 @@ export async function POST(
 
     // Parse body based on content type
     const contentType = req.headers.get("content-type") || "";
-    let data: Record<string, any> = {};
+    let data: Record<string, unknown> = {};
 
     if (contentType.includes("application/json")) {
       data = await req.json();
@@ -130,13 +141,13 @@ export async function POST(
 
     return NextResponse.json(
       { message: "Submission received successfully" },
-      { status: 200 }
+      { status: 200, headers: { "Access-Control-Allow-Origin": "*" } }
     );
   } catch (error) {
     console.error("Submission error:", error);
     return NextResponse.json(
       { message: "Something went wrong" },
-      { status: 500 }
+      { status: 500, headers: { "Access-Control-Allow-Origin": "*" } }
     );
   }
 }
