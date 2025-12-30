@@ -1,4 +1,10 @@
-export function getSubmissionNotificationEmailTemplate(formName: string, formId: string, dataHtml: string): string {
+import { APP_NAME, APP_DESCRIPTION, APP_URL } from "./constants";
+
+export function getSubmissionNotificationEmailTemplate(
+  formName: string,
+  formId: string,
+  dataHtml: string
+): string {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -15,8 +21,9 @@ export function getSubmissionNotificationEmailTemplate(formName: string, formId:
           <!-- Header -->
           <tr>
             <td style="padding: 40px 40px 30px 40px; text-align: center; background-color: #000000;">
-              <img src="https://formbridge.io/logo.svg" alt="FormBridge Logo" style="height: 36px; margin-bottom: 8px; display: block; margin-left: auto; margin-right: auto;" />
-              <div style="color: #ffffff; font-size: 22px; font-weight: bold; letter-spacing: 1px;">FormBridge</div>
+              <img src="${APP_URL}/logo.png" alt="${APP_NAME} Logo" style="height: 36px; margin-bottom: 8px; display: block; margin-left: auto; margin-right: auto;" />
+              <div style="color: #ffffff; font-size: 22px; font-weight: bold; letter-spacing: 1px;">${APP_NAME}</div>
+              <div style="color: #d1d5db; font-size: 14px; margin-top: 4px;">${APP_DESCRIPTION}</div>
             </td>
           </tr>
 
@@ -35,7 +42,7 @@ export function getSubmissionNotificationEmailTemplate(formName: string, formId:
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td align="center" style="padding: 24px 0;">
-                    <a href="${process.env.NEXTAUTH_URL}/dashboard/forms/${formId}" style="display: inline-block; padding: 14px 32px; background-color: #000000; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 14px;">
+                    <a href="${APP_URL}/dashboard/forms/${formId}" style="display: inline-block; padding: 14px 32px; background-color: #000000; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 14px;">
                       View in Dashboard
                     </a>
                   </td>
@@ -48,7 +55,7 @@ export function getSubmissionNotificationEmailTemplate(formName: string, formId:
           <tr>
             <td style="padding: 24px 40px; background-color: #f9fafb; text-align: center; border-top: 1px solid #e5e7eb;">
               <p style="margin: 0; font-size: 12px; color: #9ca3af;">
-                © ${new Date().getFullYear()} FormBridge. All rights reserved.
+                © ${new Date().getFullYear()} ${APP_NAME}. All rights reserved.
               </p>
             </td>
           </tr>
@@ -80,12 +87,9 @@ export function getVerificationEmailTemplate(
           <!-- Header -->
           <tr>
             <td style="padding: 40px 40px 30px 40px; text-align: center; background-color: #000000;">
-              <div style="display: inline-flex; align-items: center; gap: 8px;">
-                <div style="width: 28px; height: 28px; background-color: #000000; border: 2px solid #ffffff; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
-                  <div style="width: 12px; height: 12px; background-color: #ffffff; border-radius: 2px;"></div>
-                </div>
-                <span style="color: #ffffff; font-size: 20px; font-weight: bold;">StaticSend</span>
-              </div>
+              <img src="${APP_URL}/logo.png" alt="${APP_NAME} Logo" style="height: 36px; margin-bottom: 8px; display: block; margin-left: auto; margin-right: auto;" />
+              <div style="color: #ffffff; font-size: 22px; font-weight: bold; letter-spacing: 1px;">${APP_NAME}</div>
+              <div style="color: #d1d5db; font-size: 14px; margin-top: 4px;">${APP_DESCRIPTION}</div>
             </td>
           </tr>
 
@@ -99,7 +103,7 @@ export function getVerificationEmailTemplate(
               </p>
 
               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 24px; color: #6b7280;">
-                Thanks for signing up for StaticSend! To complete your registration and start collecting form submissions, please verify your email address by clicking the button below.
+                Thanks for signing up for ${APP_NAME}! To complete your registration and start collecting form submissions, please verify your email address by clicking the button below.
               </p>
 
               <table width="100%" cellpadding="0" cellspacing="0">
@@ -122,7 +126,7 @@ export function getVerificationEmailTemplate(
 
               <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
                 <p style="margin: 0; font-size: 14px; line-height: 20px; color: #9ca3af;">
-                  This verification link will expire in 24 hours. If you didn't create an account with StaticSend, you can safely ignore this email.
+                  This verification link will expire in 24 hours. If you didn't create an account with ${APP_NAME}, you can safely ignore this email.
                 </p>
               </div>
             </td>
@@ -132,7 +136,7 @@ export function getVerificationEmailTemplate(
           <tr>
             <td style="padding: 24px 40px; background-color: #f9fafb; text-align: center; border-top: 1px solid #e5e7eb;">
               <p style="margin: 0; font-size: 12px; color: #9ca3af;">
-                © ${new Date().getFullYear()} StaticSend. All rights reserved.
+                © ${new Date().getFullYear()} ${APP_NAME}. All rights reserved.
               </p>
             </td>
           </tr>
@@ -152,7 +156,7 @@ export function getWelcomeEmailTemplate(name: string): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to StaticSend</title>
+  <title>Welcome to ${APP_NAME}</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f9fafb;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f9fafb; padding: 40px 20px;">
@@ -162,34 +166,29 @@ export function getWelcomeEmailTemplate(name: string): string {
           <!-- Header -->
           <tr>
             <td style="padding: 40px 40px 30px 40px; text-align: center; background-color: #000000;">
-              <div style="display: inline-flex; align-items: center; gap: 8px;">
-                <div style="width: 28px; height: 28px; background-color: #000000; border: 2px solid #ffffff; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;">
-                  <div style="width: 12px; height: 12px; background-color: #ffffff; border-radius: 2px;"></div>
-                </div>
-                <span style="color: #ffffff; font-size: 20px; font-weight: bold;">StaticSend</span>
-              </div>
+              <img src="${APP_URL}/logo.png" alt="${APP_NAME} Logo" style="height: 36px; margin-bottom: 8px; display: block; margin-left: auto; margin-right: auto;" />
+              <div style="color: #ffffff; font-size: 22px; font-weight: bold; letter-spacing: 1px;">${APP_NAME}</div>
+              <div style="color: #d1d5db; font-size: 14px; margin-top: 4px;">${APP_DESCRIPTION}</div>
             </td>
           </tr>
 
           <!-- Content -->
           <tr>
             <td style="padding: 40px;">
-              <h1 style="margin: 0 0 16px 0; font-size: 24px; font-weight: bold; color: #111827;">Welcome to StaticSend! 🎉</h1>
+              <h1 style="margin: 0 0 16px 0; font-size: 24px; font-weight: bold; color: #111827;">Welcome to ${APP_NAME}! 🎉</h1>
 
               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 24px; color: #6b7280;">
                 Hi ${name},
               </p>
 
               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 24px; color: #6b7280;">
-                Your email has been successfully verified! You're all set to start using StaticSend to collect form submissions from your static sites.
+                Your email has been successfully verified! You're all set to start using ${APP_NAME} to collect form submissions from your static sites.
               </p>
 
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td align="center" style="padding: 24px 0;">
-                    <a href="${
-                      process.env.NEXTAUTH_URL
-                    }/dashboard" style="display: inline-block; padding: 14px 32px; background-color: #000000; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 14px;">
+                    <a href="${APP_URL}/dashboard" style="display: inline-block; padding: 14px 32px; background-color: #000000; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 14px;">
                       Go to Dashboard
                     </a>
                   </td>
@@ -212,7 +211,7 @@ export function getWelcomeEmailTemplate(name: string): string {
           <tr>
             <td style="padding: 24px 40px; background-color: #f9fafb; text-align: center; border-top: 1px solid #e5e7eb;">
               <p style="margin: 0; font-size: 12px; color: #9ca3af;">
-                © ${new Date().getFullYear()} StaticSend. All rights reserved.
+                © ${new Date().getFullYear()} ${APP_NAME}. All rights reserved.
               </p>
             </td>
           </tr>
