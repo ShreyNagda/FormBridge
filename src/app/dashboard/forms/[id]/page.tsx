@@ -10,6 +10,7 @@ import Link from "next/link";
 import CopyButton from "@/components/shared/copy-button";
 import { Button } from "@/components/shared/button";
 import TestFormButton from "@/components/dashboard/test-form-button";
+import { APP_URL } from "@/lib/constants";
 
 async function getForm(id: string) {
   const session = await getServerSession(authOptions);
@@ -39,7 +40,7 @@ export default async function FormDetailsPage({
   }
 
   const submissions = await getSubmissions(id);
-  const endpointUrl = `${process.env.NEXTAUTH_URL}/api/submit/${form._id}`;
+  const endpointUrl = `${APP_URL}/api/submit/${form._id}`;
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -48,7 +49,7 @@ export default async function FormDetailsPage({
           href="/dashboard"
           className="text-sm text-gray-500 hover:text-black flex items-center gap-1 mb-4 transition-colors"
         >
-          <Button variant="ghost">
+          <Button variant="ghost" className="gap-1">
             <ArrowLeft size={16} />
             Back to Dashboard
           </Button>

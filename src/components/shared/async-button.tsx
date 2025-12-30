@@ -5,7 +5,9 @@ import { useState } from "react";
 import { Button, ButtonProps } from "./button";
 
 interface AsyncButtonProps extends Omit<ButtonProps, "onClick"> {
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => Promise<any> | void;
+  onClick?: (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => Promise<unknown> | void;
   loadingText?: React.ReactNode;
 }
 

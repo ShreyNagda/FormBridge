@@ -1,10 +1,11 @@
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import TerminalCode from "@/components/shared/terminal-code";
+import { APP_URL } from "@/lib/constants";
 
 export default function DocsPage() {
   const htmlExample = `<!-- Simple HTML Form -->
-<form action="https://api.staticsend.com/v1/submit/YOUR_FORM_ID" method="POST">
+<form action="${APP_URL}/api/submit/YOUR_FORM_ID" method="POST">
   <input type="email" name="email" placeholder="Your email" required>
   <textarea name="message" placeholder="Your message"></textarea>
   <button type="submit">Send</button>
@@ -20,7 +21,7 @@ const handleSubmit = async (e) => {
   };
 
   try {
-    const response = await fetch("https://api.staticsend.com/v1/submit/YOUR_FORM_ID", {
+    const response = await fetch("${APP_URL}/api/submit/YOUR_FORM_ID", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -49,7 +50,7 @@ export default function ContactForm() {
     const data = Object.fromEntries(formData);
 
     try {
-      const res = await fetch('https://api.staticsend.com/v1/submit/YOUR_FORM_ID', {
+      const res = await fetch('${APP_URL}/api/submit/YOUR_FORM_ID', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -75,7 +76,7 @@ export default function ContactForm() {
 
   const pythonExample = `import requests
 
-url = "https://api.staticsend.com/v1/submit/YOUR_FORM_ID"
+url = "${APP_URL}/api/submit/YOUR_FORM_ID"
 data = {
     "email": "user@example.com",
     "message": "Hello from Python!"
@@ -88,7 +89,7 @@ if response.status_code == 200:
 else:
     print("Error:", response.text)`;
 
-  const curlExample = `curl -X POST https://api.staticsend.com/v1/submit/YOUR_FORM_ID \\
+  const curlExample = `curl -X POST ${APP_URL}/api/submit/YOUR_FORM_ID \\
   -H "Content-Type: application/json" \\
   -d '{"email": "user@example.com", "message": "Hello from terminal"}'`;
 
