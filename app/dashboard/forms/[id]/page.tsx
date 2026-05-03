@@ -53,7 +53,6 @@ export default async function FormOverviewPage({
   const session = await getSession();
   if (!session?.user) redirect("/sign-in");
   const { tab } = await searchParams;
-  console.log(tab);
 
   await connectDB();
   const [form, user] = await Promise.all([
@@ -83,7 +82,7 @@ export default async function FormOverviewPage({
     createdAt: { $gte: today },
   });
 
-  const endpoint = `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/forms/${id}`;
+  const endpoint = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/forms/${id}`;
   const globalEmails = user?.email ? [user.email] : [];
 
   const serializedSubmissions = submissions.map((sub) => ({

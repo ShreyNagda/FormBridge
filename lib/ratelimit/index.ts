@@ -31,7 +31,6 @@ export async function checkRateLimit(
     const rateLimit = await RateLimit.findOneAndUpdate(
       { identifier, windowStart },
       {
-        $setOnInsert: { identifier, windowStart, count: 0 },
         $inc: { count: 1 },
       },
       { new: true, upsert: true },
