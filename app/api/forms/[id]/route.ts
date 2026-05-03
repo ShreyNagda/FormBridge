@@ -130,7 +130,7 @@ export async function PATCH(
 
     if ("rateLimit" in parsed.data) {
       const value = parsed.data.rateLimit;
-      if (value === null || value === "") {
+      if (value === null) {
         updates.rateLimit = null;
       } else if (value !== undefined && Number.isFinite(value)) {
         updates.rateLimit = value;
