@@ -1,6 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/components/auth-provider";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -34,10 +32,26 @@ export const metadata: Metadata = {
     title: "StaticSend — Form backend for static sites",
     description:
       "Receive form submissions from your static website. No server required.",
+    images: [
+      {
+        url: "https://staticsend.vercel.app/logo",
+        width: 1200,
+        height: 630,
+        alt: "StaticSend - Form backend for static sites",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "StaticSend — Form backend for static sites",
+    images: [
+      {
+        url: "https://staticsend.vercel.app/logo",
+        width: 1200,
+        height: 630,
+        alt: "StaticSend - Form backend for static sites",
+      },
+    ],
     description:
       "Receive form submissions from your static website. No server required.",
   },

@@ -39,19 +39,21 @@ export default async function FormsPage() {
   ]);
 
   const submissionsMap = new Map(
-    submissionCounts.map((item) => [item._id as string, item.count as number]),
+    submissionCounts.map((item) => [String(item._id), item.count as number]),
   );
   const webhooksMap = new Map(
-    webhookCounts.map((item) => [item._id as string, item.count as number]),
+    webhookCounts.map((item) => [String(item._id), item.count as number]),
   );
 
-  const list = forms.map((form) => ({
-    id: String(form._id),
-    name: form.name,
-    createdAt: form.createdAt,
-    submissionsCount: submissionsMap.get(String(form._id)) ?? 0,
-    webhooksCount: webhooksMap.get(String(form._id)) ?? 0,
-  }));
+  const list = forms.map((form) => {
+    return {
+      id: String(form._id),
+      name: form.name,
+      createdAt: form.createdAt,
+      submissionsCount: submissionsMap.get(String(form._id)) ?? 0,
+      webhooksCount: webhooksMap.get(String(form._id)) ?? 0,
+    };
+  });
 
   return (
     <div className="space-y-6">

@@ -3,24 +3,67 @@ import { connectDB } from "@/lib/db";
 import { getSession } from "@/lib/auth/session";
 import { Form, Submission, WebhookDelivery, Webhook } from "@/lib/db/models";
 import { updateFormSchema } from "@/lib/validation/form";
+import bcrypt from "bcryptjs";
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  const session = await getSession();
 
-  if (!session || !session.user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // 1. Block requests from browsers (direct navigation or client-side fetch)
+  const userAgent = request.headers.get("user-agent") || "";
+  const secFetchMode = request.headers.get("sec-fetch-mode");
+  const isBrowser = /Mozilla/i.test(userAgent) || !!secFetchMode;
+
+  if (isBrowser) {
+    return NextResponse.json(
+      {
+        error:
+          "GET requests are disabled from the browser and allowed only from the server side.",
+      },
+      { status: 403 },
+    );
+  }
+
+  // 2. Authentication (Support both API Key for servers and Session for non-browser internal calls)
+  const authHeader =
+    request.headers.get("authorization") || request.headers.get("x-api-key");
+  let session = null;
+
+  if (!authHeader) {
+    session = await getSession();
+    if (!session || !session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
   }
 
   try {
     await connectDB();
-    const form = await Form.findOne({
-      _id: id,
-      userId: session.user.id,
-    }).lean();
+    let form;
+
+    if (authHeader) {
+      // API Key Auth
+      const apiKey = authHeader.startsWith("Bearer ")
+        ? authHeader.slice(7)
+        : authHeader;
+      form = await Form.findById(id).lean();
+
+      if (!form || !form.apiKey) {
+        return NextResponse.json({ error: "Not found" }, { status: 404 });
+      }
+
+      const isKeyValid = await bcrypt.compare(apiKey, form.apiKey);
+      if (!isKeyValid) {
+        return NextResponse.json({ error: "Invalid API Key" }, { status: 401 });
+      }
+    } else {
+      // Session Auth
+      form = await Form.findOne({
+        _id: id,
+        userId: session?.user.id,
+      }).lean();
+    }
 
     if (!form) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });

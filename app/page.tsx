@@ -1,4 +1,5 @@
 "use client";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -19,6 +20,8 @@ import { Badge } from "@/components/ui/badge";
 import { Logo } from "@/components/logo";
 
 export default function LandingPage() {
+  const { data: session } = useSession();
+
   return (
     <div className="flex min-h-screen flex-col">
       {/* Nav */}
@@ -29,15 +32,23 @@ export default function LandingPage() {
             <span className="font-semibold text-foreground">StaticSend</span>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" asChild>
-              <Link href="/sign-in">Sign in</Link>
-            </Button>
-            <Button asChild>
-              <Link href="/sign-up">
-                Start free
-                <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
-              </Link>
-            </Button>
+            {session ? (
+              <Button asChild>
+                <Link href="/dashboard">Dashboard</Link>
+              </Button>
+            ) : (
+              <>
+                <Button variant="ghost" asChild>
+                  <Link href="/sign-in">Sign in</Link>
+                </Button>
+                <Button asChild>
+                  <Link href="/sign-up">
+                    Start free
+                    <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+                  </Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -106,7 +117,7 @@ export default function LandingPage() {
 </form>`}
               </code>
             </pre>
-            <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 w-auto md:w-64 max-w-xs md:max-w-none rounded-lg border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-zinc-900 shadow-lg overflow-hidden animate-bounce">
+            <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 w-auto md:w-64 max-w-xs md:max-w-none rounded-lg border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-zinc-900 shadow-lg overflow-hidden animate-[bounce_2s_ease-in-out_infinite]">
               <div className="bg-emerald-50 dark:bg-emerald-950/30 border-b border-emerald-200 dark:border-emerald-800 flex items-start gap-1 p-1">
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold text-foreground text-xs md:text-sm flex gap-1 items-center text-light dark:text-emerald-100">

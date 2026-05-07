@@ -1,11 +1,18 @@
+import { getSession } from "@/lib/auth/session";
+import { redirect } from "next/navigation";
 import { Logo } from "@/components/logo";
 import Link from "next/link";
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getSession();
+
+  if (session?.user) {
+    redirect("/dashboard");
+  }
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-muted/40 p-4">
       <div className="mb-8 flex flex-col items-center gap-2">

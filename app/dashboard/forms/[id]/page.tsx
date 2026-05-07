@@ -82,7 +82,7 @@ export default async function FormOverviewPage({
     createdAt: { $gte: today },
   });
 
-  const endpoint = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/forms/${id}`;
+  const endpoint = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/submit/${id}`;
   const globalEmails = user?.email ? [user.email] : [];
 
   const serializedSubmissions = submissions.map((sub) => ({
