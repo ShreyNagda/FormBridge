@@ -1,7 +1,6 @@
 "use client";
 
-import { CreditCard, LogOut, Moon, Settings, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
+import { CreditCard, LogOut, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import {
@@ -27,7 +26,6 @@ interface UserMenuProps {
 }
 
 export function UserMenu({ user, showName }: UserMenuProps) {
-  const { setTheme } = useTheme();
   const router = useRouter();
 
   const handleSignOut = async () => {
@@ -85,23 +83,12 @@ export function UserMenu({ user, showName }: UserMenuProps) {
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Settings</span>
               </DropdownMenuItem>
-              <DropdownMenuItem
+              {/* <DropdownMenuItem
                 onClick={() => router.push("/dashboard/billing")}
               >
                 <CreditCard className="mr-2 h-4 w-4" />
                 <span>Billing</span>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => setTheme("light")}>
-                <Sun className="mr-2 h-4 w-4" />
-                <span>Light theme</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dark")}>
-                <Moon className="mr-2 h-4 w-4" />
-                <span>Dark theme</span>
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignOut}>

@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/components/auth-provider";
-import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -77,30 +76,23 @@ export default function RootLayout({
     >
       <head />
       <body className="min-h-screen bg-background font-sans text-foreground">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <AuthProvider>
-            <TooltipProvider>{children}</TooltipProvider>
-          </AuthProvider>
-          <Toaster
-            position="bottom-right"
-            closeButton
-            toastOptions={{
-              classNames: {
-                toast:
-                  "bg-card text-card-foreground border border-border shadow-lg",
-                success: "!border-l-[3px] !border-l-success",
-                error: "!border-l-[3px] !border-l-error",
-                warning: "!border-l-[3px] !border-l-warning",
-                info: "!border-l-[3px] !border-l-info",
-              },
-            }}
-          />
-        </ThemeProvider>
+        <AuthProvider>
+          <TooltipProvider>{children}</TooltipProvider>
+        </AuthProvider>
+        <Toaster
+          position="bottom-right"
+          closeButton
+          toastOptions={{
+            classNames: {
+              toast:
+                "bg-card text-card-foreground border border-border shadow-lg",
+              success: "!border-l-[3px] !border-l-success",
+              error: "!border-l-[3px] !border-l-error",
+              warning: "!border-l-[3px] !border-l-warning",
+              info: "!border-l-[3px] !border-l-info",
+            },
+          }}
+        />
       </body>
     </html>
   );

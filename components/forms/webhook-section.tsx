@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Plus, Webhook as WebhookIcon, Loader2, Trash2 } from "lucide-react";
@@ -31,9 +31,16 @@ export function WebhookSection({
   const [isTesting, setIsTesting] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
+  // Sync state if initialWebhooks prop changes (e.g. via router.refresh())
+  useEffect(() => {
+    setWebhooks(initialWebhooks);
+  }, [JSON.stringify(initialWebhooks)]);
+
   const refreshWebhooks = async () => {
     try {
-      const response = await fetch(`/api/forms/${formId}/webhooks`);
+      const response = await fetch(`/api/forms/${formId}/webhooks?t=${Date.now()}`, {
+        cache: "no-store",
+      });
       if (response.ok) {
         const data = await response.json();
         setWebhooks(data);
